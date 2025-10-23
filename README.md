@@ -5,7 +5,7 @@ A Perplexity AI MCP (Model Context Protocol) server implementation that enables 
 
 ## Motivation
 
-This project was created to utilize the $5 credits from Perplexity's Pro plan (free for students), providing an easy way to access web search capabilities through MCP-compatible AI assistants.
+This project was created to utilize the $5 credits from Perplexity's Pro plan (free for students: [perplexity link](https://plex.it/referrals/O1P7124D)), providing an easy way to access web search capabilities through MCP-compatible AI assistants.
 
 
 ## Features
