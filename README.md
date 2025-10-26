@@ -154,21 +154,141 @@ Then run:
 uv run perplexity-mcp
 ```
 
-## Usage
+## Available Features
 
-Once configured, you can use the `ask_perplexity` tool in your AI assistant:
+The Perplexity MCP server provides four main tools to interact with the Perplexity AI API:
 
-```python
-# Example prompt
-"Use Perplexity to search for the latest news about AI developments"
+### 1. `ask_perplexity` - Standard Search
+
+Main tool for performing web searches via Perplexity AI.
+
+**How it works:**
+- Sends a query to Perplexity AI to get up-to-date information from the web
+- Returns a formatted response with cited sources
+- Uses the default model (sonar) unless otherwise specified
+
+
+**Use cases:**
+- Search for recent or real-time information
+- Get answers based on multiple web sources
+- Verify facts or current statistics
+
+**Example:**
+```
+#ask_perplexity
+What are the latest AI developments in October 2024?
 ```
 
-Available models:
-- `sonar` (default) - Fast, general-purpose search
-- `sonar-pro` - Enhanced accuracy and depth
-- `sonar-deep-research` - Comprehensive research
-- `sonar-reasoning` - Advanced reasoning capabilities
-- `sonar-reasoning-pro` - Premium reasoning with extended context
+---
+
+### 2. `ask_perplexity_exact_response` - Unmodified Response
+
+Returns the exact response from Perplexity AI without any modification or reformatting.
+
+**How it works:**
+- Similar to `ask_perplexity` but preserves Perplexity's original response
+- No additional processing is applied
+- Ideal when you want Perplexity's raw answer
+
+
+**Use cases:**
+- When you want to see exactly what Perplexity responded
+- To avoid any interpretation or reformatting by the assistant
+- Get citations and sources exactly as Perplexity provides them
+
+**Example:**
+```
+#ask_perplexity_exact_response
+Search for the latest tech news in France
+```
+
+---
+
+### 3. `ask_perplexity_for_instructions` - Instructions Mode
+
+Designed to obtain detailed and executable instructions on a complex topic.
+
+**How it works:**
+- Uses a special pedagogical preprompt that guides Perplexity to provide structured instructions
+- Ideal for learning or understanding technical concepts
+- Returns detailed steps, code examples, and clear explanations
+
+
+**Use cases:**
+- Learn a new concept or technology
+- Get a step-by-step guide to accomplish a task
+- Understand complex topics with practical examples
+- Generate example code with detailed explanations
+
+**Example:**
+```
+#ask_perplexity_for_instructions
+Create a REST API server in Go for my books database
+```
+
+---
+
+### 4. `ask_perplexity_to_learn` - Learning Mode
+
+Pedagogical tool specially designed for learning complex topics.
+
+**How it works:**
+- Uses an advanced pedagogical preprompt that structures the response to facilitate learning
+- Breaks down concepts into logical steps
+- Provides analogies, concrete examples, and comprehension checks
+- Uses the reasoning model by default for more in-depth explanations
+
+
+**Response structure:**
+1. Simple overview of the concept
+2. Breakdown into logical steps (3-7 steps)
+3. For each step: simple explanation + concrete example + commented code
+4. Checkpoints to verify understanding
+5. Summary of key points and tips to go further
+
+**Use cases:**
+- Learning complex computer science concepts (algorithms, data structures, etc.)
+- Understanding mathematical principles
+- Studying new technologies or frameworks
+- Self-directed learning on technical topics
+
+**Example:**
+```
+#ask_perplexity_to_learn
+Teach me arithmetic coding step by step with code examples in Go
+```
+
+---
+
+### Available Sonar Models
+
+All tools support the following models:
+
+- **`sonar`** (default for ask_perplexity and ask_perplexity_exact_response)
+  - Fast, general-purpose search
+  - Good balance between speed and quality
+  - Ideal for most queries
+
+- **`sonar-pro`**
+  - Enhanced accuracy and depth
+  - More sources and analysis
+  - Recommended for important searches
+
+- **`sonar-deep-research`**
+  - Comprehensive and thorough research
+  - Complete analysis of multiple sources
+  - For serious research projects
+
+- **`sonar-reasoning`** (default for ask_perplexity_for_instructions and ask_perplexity_to_learn)
+  - Advanced reasoning capabilities
+  - Better for complex explanations
+  - Ideal for learning and instructions
+
+- **`sonar-reasoning-pro`**
+  - Premium reasoning with extended context
+  - Most powerful for complex tasks
+  - Best understanding and explanation
+
 
 ## Development
 
