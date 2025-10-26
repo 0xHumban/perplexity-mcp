@@ -15,6 +15,41 @@ client = OpenAI(
 mcp = FastMCP("perplexity-mcp")
 
 
+"""
+Helper function to get perplexity response
+Args:
+    prompt: The prompt/question to send
+    model: Sonar model (sonar, sonar-pro, sonar-deep-research, 
+           sonar-reasoning, sonar-reasoning-pro)
+    prePromptInput: Preprompt input to include in the prompt sent to Perplexity
+    prePromptOutput: Preprompt output to include in the prompt return to copilot
+Returns:
+    The response from Perplexity with citations if available
+"""
+def get_perplexity_response(prompt: str, model: str, prePromptInput: str = "", prePromptOutput: str = "") -> str:
+    response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"{prePromptInput}\n\n{prompt}"
+                }
+            ]
+        )
+        
+    answer = response.choices[0].message.content
+        
+    # Add citations if available
+    citations = ""
+    if hasattr(response, 'citations') and response.citations:
+        citations = "\n\n**Sources:**\n"
+        for i, citation in enumerate(response.citations[:5], 1):
+            citations += f"{i}. {citation}\n"
+
+
+
+    return f"{prePromptOutput}\n\n{answer}{citations}"
+
 @mcp.tool()
 async def ask_perplexity(
     prompt: str,
@@ -30,28 +65,8 @@ async def ask_perplexity(
                sonar-reasoning, sonar-reasoning-pro)
     """
     try:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
-        
-        answer = response.choices[0].message.content
-        
-        # Add citations if available
-        citations = ""
-        if hasattr(response, 'citations') and response.citations:
-            citations = "\n\n**Sources:**\n"
-            for i, citation in enumerate(response.citations[:5], 1):
-                citations += f"{i}. {citation}\n"
-
-
-
-        return f"{answer}{citations}"
+        response = get_perplexity_response(prompt, model)
+        return response
 
     except Exception as e:
         return f"❌ Perplexity Error: {str(e)}"
